@@ -61,7 +61,7 @@ npm install --save mobx-react-form
 Below we are creating a `plugins` object using the `validatorjs` package to enable `DVR` functionalities (Declarative Validation Rules).
 
 ```javascript
-import validatorjs from 'validatorjs';
+import validatorjs = require('validatorjs');
 
 const plugins = { dvr: validatorjs };
 ```

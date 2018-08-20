@@ -1,0 +1,12 @@
+{
+    "extends": [
+        "tslint-config-airbnb"
+      ],
+    "rules": {
+        "react/forbid-prop-types": [false],
+        "class-methods-use-this": [false],
+        "function-paren-newline": [false],
+        "no-confusing-arrow": [false],
+        "padded-blocks": [false]
+    }
+}

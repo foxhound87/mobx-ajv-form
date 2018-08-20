@@ -1,25 +1,25 @@
-import { join } from 'path';
+const path = require('path')
 
 const loaders = [{
-  test: /\.js$/,
-  loader: 'babel-loader',
-  include: join(__dirname, 'src'),
+  test: /\.ts$/,
+  loader: 'ts-loader',
+  include: path.join(__dirname, 'src'),
 }, {
   test: /\.json$/,
   loader: 'json-loader',
 }];
 
-export default {
+module.exports = {
   devtool: 'source-map',
   entry: './src/index',
   output: {
-    path: join(__dirname, 'umd'),
+    path: path.join(__dirname, 'umd'),
     library: 'MobxReactForm',
     libraryTarget: 'umd',
   },
   resolve: {
     modules: ['node_modules'],
-    extensions: ['.js', '.json'],
+    extensions: ['.ts', '.json'],
   },
   externals: {
     mobx: 'mobx',

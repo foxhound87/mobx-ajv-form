@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "outDir": "./lib/",
+    "sourceMap": true,
+    "skipLibCheck": false,
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "baseUrl": "./",
+    "lib": ["dom","es5", "scripthost", "es2015" ],
+    "paths": { "*": [ "./types/*"] },
+    "typeRoots" : [
+      "node_modules/@types",
+      "./types"],
+    
+    "rootDir": "./src"
+   
+  },
+  "include": ["./src/**/*"]
+
+}
