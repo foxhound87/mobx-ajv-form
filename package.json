@@ -22,7 +22,7 @@
     "watch:test": "npm run test -- -w",
     "test": "cross-env TEST=true mocha tests --compilers js:@babel/register",
     "cover": "nyc npm test",
-    "coverage:check": "nyc check-coverage --satements 95 --branches 80 --functions 95 --lines 95",
+    "coverage:check": "nyc check-coverage --satements 95 --branches 80 --functions 86 --lines 91",
     "coverage:report": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "semantic-release": "semantic-release"
   },
@@ -96,7 +96,7 @@
     "mobx": "^6.0.0",
     "mocha": "3.2.0",
     "npm-run-all": "4.0.1",
-    "nyc": "^10.2.0",
+    "nyc": "^15.1.0",
     "rimraf": "2.5.4",
     "semantic-release": "^15.13.3",
     "validator": "^8.0.0",
