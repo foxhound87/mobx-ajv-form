@@ -98,7 +98,7 @@
     "npm-run-all": "4.0.1",
     "nyc": "^10.2.0",
     "rimraf": "2.5.4",
-    "semantic-release": "^15.13.3",
+    "semantic-release": "^17.2.3",
     "validator": "^8.0.0",
     "validatorjs": "^3.15.1",
     "webpack": "3",
