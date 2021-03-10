@@ -1,12 +1,13 @@
 import { observable, computed, toJS, makeObservable } from 'mobx';
 import _ from 'lodash';
 
+import Actions from "./shared/Actions";
 import {
   $try,
   $isEvent,
   hasIntKeys } from './utils';
 
-export default class Base {
+export default class Base extends Actions {
   noop = () => {};
 
   @observable $submitted = 0;
@@ -31,6 +32,8 @@ export default class Base {
   ).apply(this, [...args]), this.execHook(name)];
 
   constructor() {
+    super();
+
     makeObservable(this);
   }
 

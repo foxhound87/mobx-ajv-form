@@ -135,16 +135,10 @@ export default class Form extends Base {
   @computed get disabled() {
     return this.check('disabled', true);
   }
-}
-
-/**
-  Prototypes
-*/
-export const prototypes = {
 
   makeField(data) {
     return new Field(data);
-  },
+  }
 
   /**
    Init Form Fields and Nested Fields
@@ -161,18 +155,18 @@ export const prototypes = {
     this.initFields({
       fields: $fields || this.state.struct(),
     });
-  },
+  }
 
   @action
   invalidate(message = null) {
     this.validator.error = message
       || this.state.options.get('defaultGenericError')
       || true;
-  },
+  }
 
   showErrors(show = true) {
     this.each(field => field.showErrors(show));
-  },
+  }
 
   /**
     Clear Form Fields
@@ -181,7 +175,7 @@ export const prototypes = {
     this.$touched = false;
     this.$changed = false;
     this.each(field => field.clear(true));
-  },
+  }
 
   /**
     Reset Form Fields
@@ -190,6 +184,5 @@ export const prototypes = {
     this.$touched = false;
     this.$changed = false;
     this.each(field => field.reset(true));
-  },
-
+  }
 };

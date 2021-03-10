@@ -1,4 +1,4 @@
-import { action } from 'mobx';
+import { action, makeObservable } from 'mobx';
 import _ from 'lodash';
 import utils from '../utils';
 import parser from '../parser';
@@ -6,7 +6,10 @@ import parser from '../parser';
 /**
   Field Initializer
 */
-export default {
+export default class Initializer {
+  constructor() {
+    makeObservable(this);
+  }
 
   initFields(initial, update) {
     const fallback = this.state.options.get('fallback');
@@ -37,7 +40,7 @@ export default {
         }
       }
     })
-  },
+  }
 
   @action
   initField(key, path, data, update = false) {
@@ -80,6 +83,6 @@ export default {
     this.fields.merge({ [key]: field });
 
     return field;
-  },
+  }
 
 };

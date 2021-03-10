@@ -1,17 +1,23 @@
-import { action } from 'mobx';
+import { action, makeObservable } from 'mobx';
 import _ from 'lodash';
 import utils from '../utils';
 import parser from '../parser';
+import Initializer from './Initializer';
 
 /**
   Field Actions
 */
-export default {
+export default class Actions extends Initializer {
+  constructor() {
+    super();
+
+    makeObservable(this);
+  }
 
   validate(opt = {}, obj = {}) {
     const $opt = _.merge(opt, { path: this.path });
     return this.state.form.validator.validate($opt, obj);
-  },
+  }
 
   /**
     Submit
@@ -49,7 +55,7 @@ export default {
     return utils.isPromise(exec)
       ? exec.then(() => validate())
       : validate();
-  },
+  }
 
   /**
    Check Field Computed Values
@@ -63,7 +69,7 @@ export default {
         data: this.deepCheck(utils.props.types[prop], prop, this.fields),
       })
       : this[prop];
-  },
+  }
 
   deepCheck(type, prop, fields) {
     const $fields = utils.getObservableMapValues(fields);
@@ -76,7 +82,7 @@ export default {
       check.push(utils.checkPropType({ type, data: $deep }));
       return check;
     }, []);
-  },
+  }
 
   /**
    Update Field Values recurisvely
@@ -88,7 +94,7 @@ export default {
     }
 
     return this.deepUpdate(parser.prepareFieldsData({ fields }));
-  },
+  }
 
   @action
   deepUpdate(fields, path = '', recursion = true) {
@@ -135,7 +141,7 @@ export default {
         }
       }
     });
-  },
+  }
 
   /**
     Get Fields Props
@@ -161,7 +167,7 @@ export default {
     }
 
     return this.deepGet(prop, this.fields);
-  },
+  }
 
   /**
     Get Fields Props Recursively
@@ -208,7 +214,7 @@ export default {
 
       return obj;
     }, {});
-  },
+  }
 
   /**
    Set Fields Props
@@ -229,7 +235,7 @@ export default {
       if (this.hasNestedFields) this.deepSet('value', prop, '', true);
       else this.set('value', prop);
     }
-  },
+  }
 
   /**
     Set Fields Props Recursively
@@ -261,7 +267,7 @@ export default {
           }
         }
       });
-  },
+  }
 
   /**
    Add Field
@@ -282,7 +288,7 @@ export default {
     const $path = $key => _.trimStart([this.path, $key].join('.'), '.');
     const tree = parser.pathToFieldsTree(this.state.struct(), this.path, 0, true);
     return this.initField(key, $path(key), _.merge(tree[0], obj));
-  },
+  }
 
   /**
    Del Field
@@ -306,6 +312,6 @@ export default {
     }
 
     return container.fields.delete(last);
-  },
+  }
 
 };
