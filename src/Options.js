@@ -33,6 +33,8 @@ export default class Options {
       leading: false,
       trailing: true,
     },
+    stopValidationOnError: false,
+    validationOrder: undefined
   };
 
   constructor() {

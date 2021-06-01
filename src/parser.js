@@ -15,6 +15,7 @@ const defaultValue = ({
   nullable = false,
   isEmptyArray = false
 }) => {
+  if (type === 'nullable') return null;
   if (type === 'date') return null;
   if (type === 'datetime-local') return null;
   if (type === 'checkbox') return false;

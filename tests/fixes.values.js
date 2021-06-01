@@ -1,7 +1,9 @@
 import { expect } from 'chai';
-
+import validatorjs from 'validatorjs';
 import $ from './data/_.fixes'; // FORMS
 import Form from '../src';
+import dvr from '../src/validators/DVR';
+import vjf from '../src/validators/VJF';
 
 describe('$A Field values checks', () => {
   it('$A qwerty value should be equal to "0"', () =>
@@ -278,7 +280,7 @@ describe('$481 Field values checks', () => {
 });
 
 describe('separated has correct definition', () => {
-	it('', () => {
+  it('', () => {
     expect($.$492.$('club.name').value).to.be.equal('')
     expect($.$492.$('club.city').value).to.be.equal('')
     expect($.$492.values())
@@ -292,7 +294,7 @@ describe('separated has correct definition', () => {
 });
 
 describe('set null value', () => {
-	it('', () => {
+  it('', () => {
     expect($.$495.$('club.name').value).to.be.equal('JJSC')
     expect($.$495.$('club.city').value).to.be.equal('Taipei')
     $.$495.$('club').set(null)
@@ -307,7 +309,7 @@ describe('set null value', () => {
 });
 
 describe('falsy fallback', () => {
-	it('', () => {
+  it('', () => {
     expect($.$505.$('club.name').value).to.be.equal('JJSC')
     expect($.$505.$('club.city').value).to.be.equal('Taipei')
     expect($.$505.$('club').has('area')).to.be.equal(false)
@@ -316,21 +318,21 @@ describe('falsy fallback', () => {
 });
 
 describe('null date', () => {
-	it('', () => {
+  it('', () => {
     expect($.$507.$('people.0.birthday').value).to.be.equal(null)
     expect($.$507.$('people').add().$('birthday').value).to.be.equal(null)
   })
 });
 
 describe('update with input', () => {
-	it('', () => {
+  it('', () => {
     expect($.$514.$('priority').value).to.be.equal(1)
     expect($.$514.$('itineraryItems.0.hotel.starRating').value).to.be.equal(5)
   })
 });
 
 describe('new form with nested array values', () => {
-	it('', () => {
+  it('', () => {
     const fields = [
       'purpose',
       'trip.itineraryItems[].hotel.name',
@@ -363,7 +365,7 @@ describe('new form with nested array values', () => {
 });
 
 describe('update to nested array items', () => {
-	it('', () => {
+  it('', () => {
     const fields = [
       'bulletin',
       'bulletin.jobs',
@@ -417,7 +419,7 @@ describe('#523', () => {
         name: "nestedB",
         label: "nestedB"
       }]
-	}];
+  }];
 
     const $523 = new Form({fields}, {name: 'Form 523'})
     expect($523.isDirty).to.be.false
@@ -425,7 +427,7 @@ describe('#523', () => {
 });
 
 describe('update nested nested array items', () => {
-	it('', () => {
+  it('', () => {
     const fields = [
       'pricing',
       'pricing.value[]',
@@ -448,7 +450,7 @@ describe('update nested nested array items', () => {
     };
     const $526 = new Form({fields, values}, {name: 'Form 526'})
     console.debug('pricing.value.0.initial', $526.$('pricing.value.0').initial)
-	  console.debug('pricing.value.0.prices.initial', $526.$('pricing.value.0.prices').initial)
+    console.debug('pricing.value.0.prices.initial', $526.$('pricing.value.0.prices').initial)
     $526.update({
       pricing: {
         value: [
@@ -476,7 +478,7 @@ describe('update nested nested array items', () => {
 });
 
 describe('falsy fallback for array items', () => {
-	it('', () => {
+  it('', () => {
     const fields = [
       'purpose',
       'trip.itineraryItems[].hotel.name',
@@ -489,16 +491,16 @@ describe('falsy fallback for array items', () => {
         itineraryItems: [{
           hotel: {
             name: 'Shangri-La Hotel',
-			starRating: '5.0',
-			favorite: true
+      starRating: '5.0',
+      favorite: true
           },
         }, {
           hotel: null,
         }, {
           hotel: {
             name: 'Trump Hotel',
-			starRating: '5.0',
-			favorite: false
+      starRating: '5.0',
+      favorite: false
           },
         }]
       }
@@ -538,3 +540,73 @@ describe('output goes wrong', () => {
       expect($541.values().customer).to.be.equal('c-001')
   })
 });
+
+describe('stop validation on error', () => {
+  const fields = [
+    'username',
+  ];
+  
+  const rules = {
+    username: 'required'
+  };
+  
+  class NewForm extends Form {
+    plugins() {
+      return {
+        vjf: vjf(),
+        dvr: dvr({
+          package: validatorjs
+        }),
+      };
+    }
+  }
+  
+  it('default options', () => {
+
+    const values = {
+      username: 'test-user'
+    }
+
+    const validators = {
+      username: ({field, form}) => {
+        return [true]
+      }
+    };
+
+    let $576 = new NewForm({ fields, values, validators, rules }, { name: 'Form 999' } );
+    expect($576.isValid).to.be.true
+
+    $576 = new NewForm({ fields, validators, rules }, { name: 'Form 999' } );
+    expect($576.isValid).to.be.false
+  })
+
+  it('stopValidationOnError and validationOrder: dvr, vjf ', () => {
+    let validators = {
+      username: ({field, form}) => {
+        expect.fail()
+        return [field.value === 'test-user']
+      }
+    };
+    let $576 = new NewForm({ fields, validators, rules }, { name: 'Form 999', options: {
+      stopValidationOnError: true, validationOrder: ['dvr', 'vjf']
+    }});
+    expect($576.isValid).to.be.false
+
+    let called = false
+    validators = {
+      username: ({field, form}) => {
+        called = true
+        return [field.value === 'test-user']
+      }
+    };
+    const values = {
+      username: 'test-user'
+    }
+    $576 = new NewForm({ fields, values, validators, rules }, { name: 'Form 999', options: {
+      stopValidationOnError: true, validationOrder: ['dvr', 'vjf']
+    }});
+    expect(called).to.be.true
+    expect($576.isValid).to.be.true
+  })
+
+})
