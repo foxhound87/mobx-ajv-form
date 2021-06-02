@@ -21,6 +21,7 @@ import $Q2 from './forms/fixes/form.q2';
 import $R from './forms/fixes/form.r';
 import $S from './forms/fixes/form.s';
 import $T from './forms/fixes/form.t';
+import $U from './forms/fixes/form.u';
 
 import $425 from './forms/fixes/form.425';
 import $472 from './forms/fixes/form.472';
@@ -34,7 +35,7 @@ import $514 from './forms/fixes/form.514';
 
 export default {
 
-  $A, $B, $C, $D, $E, $F, $G, $H, $I, $L, $M, $N, $O, $P, $Q, $Q1, $Q2, $R, $S, $T, $425, $472, $480, $481, $492, $495, $505, $507, $514
+  $A, $B, $C, $D, $E, $F, $G, $H, $I, $L, $M, $N, $O, $P, $Q, $Q1, $Q2, $R, $S, $T, $U, $425, $472, $480, $481, $492, $495, $505, $507, $514
 
 };
 

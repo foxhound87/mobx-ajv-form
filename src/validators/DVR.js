@@ -65,6 +65,12 @@ class DVR {
           }
         });
       }
+      else if (typeof rule.value === 'string' && rule.name.match(/^(before|after)/)) {
+        const f = this.state.form.$(rule.value);
+        if (f && f.path && f.label) {
+          labels[f.path] = f.label;
+        }
+      }
     });
     validation.setAttributeNames(labels);
   }

@@ -28,3 +28,16 @@ describe('Check Fixes $B validation', () => {
     expect($.$B.$('emptyArray').hasError).to.be.true);
 });
 
+describe('Check before/after $U validation', () => {
+  it('$U from hasError should be true', () =>
+    expect($.$U.$('from').hasError).to.be.true);
+
+  it('$U from error message should be equal to "The FROM must be equal or before TO."', () =>
+    expect($.$U.$('from').error).to.be.equal('The FROM must be equal or before TO.'));
+
+  it('$U to hasError should be true', () =>
+    expect($.$U.$('to').hasError).to.be.true);
+
+  it('$U to error message should be equal to "The TO must be after FROM."', () =>
+    expect($.$U.$('to').error).to.be.equal('The TO must be after FROM.'));
+});
